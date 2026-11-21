@@ -65,6 +65,7 @@ NuGetのバージョンはプロジェクト生成時に再確認し、中央パ
 - Microsoft.Extensions.Loggingのconsole + ローカルファイルproviderを登録。画像・OCR・クリップボード内容はログに含めない。
 - 7個のPlatform interfaceをDI登録。現段階のproviderは未実装操作ごとに`PlatformNotSupportedException`を返す。
 - macOS 27.2.1 arm64でRelease self-contained publishとFinder起動可能な`.app`を作成して、実際にメインウィンドウを表示確認した。非対話シェルからraw apphostを実行するとAvalonia Nativeのdisplay render timerが`-6661`で失敗したが、`.app`バンドル経由の起動は成功した。
+- 同じ共通UIプロジェクトをmacOS上からWindows x64 self-contained publishできることを確認した。Windows上での起動・画面描画・ネイティブ撮影の動作確認は未実施。
 
 ## OS固有の技術課題
 

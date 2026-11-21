@@ -17,7 +17,7 @@
 3. サービス契約と撮影画像モデル、論理/物理座標モデルを実装。
 4. メイン画面、テーマ切替、エラー通知、設定読み書きを確認。
 
-結果: macOS 27.2.1 arm64でself-contained `.app`からウィンドウ表示を確認。`dotnet build`は0警告/0エラー、xUnit 6件成功。画面撮影/OCR/QRの各OS実装はPhase 1の対象外で、UI上も未実装と表示。
+結果: macOS 27.2.1 arm64でself-contained `.app`からウィンドウ表示を確認。Windows x64 self-contained publishもmacOS上で成功した。`dotnet build`は0警告/0エラー、xUnit 6件成功。Windows上の起動確認と撮影/OCR/QRの各OS実装はPhase 1の対象外で、UI上も未実装と表示。
 
 ## Phase 2 — 基本撮影
 

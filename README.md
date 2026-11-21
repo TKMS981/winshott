@@ -31,6 +31,8 @@ To publish a self-contained Apple Silicon build:
 
 To create a launchable `.app` bundle, run `./scripts/package-macos-app.sh`; the result is `artifacts/Winshott.app`. Open that bundle from Finder. Running the raw Avalonia executable from a non-interactive shell can fail to create macOS's display render timer even when the Mac desktop is available.
 
+Cross-publish the common UI foundation for Windows x64 from macOS with `./scripts/dotnet-local.sh restore src/Winshott/Winshott.csproj -r win-x64` followed by `./scripts/dotnet-local.sh publish src/Winshott/Winshott.csproj -c Release -r win-x64 --self-contained true`. This verifies packaging compatibility only; Windows execution and capture APIs still require Windows testing.
+
 ## Tests
 
 The xUnit suite covers initial settings creation, save/load, malformed JSON recovery, main view model initialization, platform service registration, and explicit unavailable behavior for unimplemented platform services.
