@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Winshott.Presentation.ViewModels"
+        x:Class="Winshott.Presentation.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Winshott"
+        Width="940" Height="620" MinWidth="760" MinHeight="520"
+        WindowStartupLocation="CenterScreen">
+  <Grid ColumnDefinitions="220,*" RowDefinitions="Auto,*">
+    <Border Grid.ColumnSpan="2" Padding="24,18" BorderBrush="{DynamicResource ThemeBorderLowBrush}" BorderThickness="0,0,0,1">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Width="34" Height="34" CornerRadius="10" Background="#4F6BED">
+            <TextBlock Text="W" Foreground="White" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <StackPanel Spacing="1">
+            <TextBlock Text="Winshott" FontSize="19" FontWeight="SemiBold" />
+            <TextBlock Text="Screenshot workspace" FontSize="12" Opacity="0.65" />
+          </StackPanel>
+        </StackPanel>
+        <Button Grid.Column="1" Content="Settings" Command="{Binding NavigateSettingsCommand}" Padding="16,8" CornerRadius="10" />
+      </Grid>
+    </Border>
+
+    <StackPanel Grid.Row="1" Margin="16,20" Spacing="8">
+      <TextBlock Text="WORKSPACE" Margin="10,0,0,8" FontSize="11" FontWeight="SemiBold" Opacity="0.55" />
+      <Button Content="⌖   Capture" Command="{Binding NavigateCaptureCommand}" HorizontalContentAlignment="Left" Padding="14,11" CornerRadius="10" />
+      <Button Content="▤   OCR" Command="{Binding NavigateOcrCommand}" HorizontalContentAlignment="Left" Padding="14,11" CornerRadius="10" />
+      <Button Content="▦   QR reader" Command="{Binding NavigateQrCodeCommand}" HorizontalContentAlignment="Left" Padding="14,11" CornerRadius="10" />
+      <Button Content="◷   History" Command="{Binding NavigateHistoryCommand}" HorizontalContentAlignment="Left" Padding="14,11" CornerRadius="10" />
+      <Border Margin="8,18,8,0" Padding="12" CornerRadius="10" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Foundation build" FontWeight="SemiBold" />
+          <TextBlock Text="Capture and recognition services are not connected yet." TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+
+    <Border Grid.Column="1" Grid.Row="1" Margin="0,20,24,20" Padding="28" CornerRadius="16" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+      <ContentControl Content="{Binding CurrentPage}" />
+    </Border>
+  </Grid>
+</Window>

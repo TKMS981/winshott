@@ -1,0 +1,27 @@
+# .NET SDK installed locally for this project
+.dotnet/
+.tools/
+
+# Build output
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+# macOS
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+
+# Logs and local configuration
+*.log
+appsettings.local.json

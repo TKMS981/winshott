@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Winshott.Presentation.ViewModels"
+             x:Class="Winshott.Presentation.Views.QrCodeView"
+             x:DataType="vm:QrCodeViewModel">
+  <StackPanel Spacing="14">
+    <TextBlock Text="QR reader" FontSize="26" FontWeight="SemiBold" />
+    <TextBlock Text="Read QR codes and supported barcodes from an image." TextWrapping="Wrap" Opacity="0.68" />
+    <Border Padding="16" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+      <StackPanel Spacing="5">
+        <TextBlock Text="Not implemented yet" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Opacity="0.75" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

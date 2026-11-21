@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Winshott.Presentation.Views.HistoryView">
+  <StackPanel Spacing="14">
+    <TextBlock Text="Capture history" FontSize="26" FontWeight="SemiBold" />
+    <TextBlock Text="Your recent captures will appear here." Opacity="0.68" />
+    <Border Padding="16" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+      <TextBlock Text="History is not implemented yet." Opacity="0.75" />
+    </Border>
+  </StackPanel>
+</UserControl>

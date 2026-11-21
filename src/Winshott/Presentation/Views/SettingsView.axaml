@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Winshott.Presentation.ViewModels"
+             x:Class="Winshott.Presentation.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+  <ScrollViewer>
+    <StackPanel Spacing="14">
+      <TextBlock Text="Settings" FontSize="26" FontWeight="SemiBold" />
+      <TextBlock Text="Preferences are stored locally as JSON." Opacity="0.68" />
+      <TextBlock Text="Appearance" FontWeight="SemiBold" Margin="0,8,0,0" />
+      <ComboBox ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding Theme}" Width="220" HorizontalAlignment="Left" />
+      <TextBlock Text="Save location" FontWeight="SemiBold" Margin="0,8,0,0" />
+      <TextBox Text="{Binding SaveLocation}" PlaceholderText="Default Pictures folder" />
+      <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="12" Margin="0,8,0,0">
+        <TextBlock Text="Default format" VerticalAlignment="Center" />
+        <ComboBox Grid.Column="1" ItemsSource="{Binding FormatOptions}" SelectedItem="{Binding DefaultImageFormat}" Width="150" />
+        <TextBlock Grid.Row="1" Text="JPEG quality" VerticalAlignment="Center" />
+        <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding JpegQuality}" Minimum="1" Maximum="100" Width="150" />
+        <TextBlock Grid.Row="2" Text="Copy after capture" VerticalAlignment="Center" />
+        <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding AutoCopy}" HorizontalAlignment="Right" />
+      </Grid>
+      <StackPanel Spacing="10" Margin="0,8,0,0">
+        <CheckBox Content="Save automatically after capture" IsChecked="{Binding AutoSave}" />
+        <TextBlock Text="Startup behavior" FontWeight="SemiBold" />
+        <ComboBox ItemsSource="{Binding StartupOptions}" SelectedItem="{Binding StartupAction}" Width="220" HorizontalAlignment="Left" />
+        <TextBlock Text="Global shortcut defaults" FontWeight="SemiBold" />
+        <Grid ColumnDefinitions="*,180" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="7">
+          <TextBlock Text="Region" VerticalAlignment="Center" /><TextBox Grid.Column="1" Text="{Binding RegionShortcut}" />
+          <TextBlock Grid.Row="1" Text="Full screen" VerticalAlignment="Center" /><TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FullScreenShortcut}" />
+          <TextBlock Grid.Row="2" Text="Window" VerticalAlignment="Center" /><TextBox Grid.Row="2" Grid.Column="1" Text="{Binding WindowShortcut}" />
+          <TextBlock Grid.Row="3" Text="Scrolling" VerticalAlignment="Center" /><TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ScrollingShortcut}" />
+          <TextBlock Grid.Row="4" Text="OCR" VerticalAlignment="Center" /><TextBox Grid.Row="4" Grid.Column="1" Text="{Binding OcrShortcut}" />
+          <TextBlock Grid.Row="5" Text="QR" VerticalAlignment="Center" /><TextBox Grid.Row="5" Grid.Column="1" Text="{Binding QrShortcut}" />
+        </Grid>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
+        <Button Content="Save settings" Command="{Binding SaveCommand}" Padding="16,9" CornerRadius="9" />
+        <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" Opacity="0.75" />
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

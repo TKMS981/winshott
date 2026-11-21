@@ -1,0 +1,28 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="using:Avalonia.Themes.Fluent"
+             xmlns:vm="using:Winshott.Presentation.ViewModels"
+             xmlns:views="using:Winshott.Presentation.Views"
+             x:Class="Winshott.App"
+             RequestedThemeVariant="Default">
+  <Application.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:CaptureViewModel}">
+      <views:CaptureView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:OcrViewModel}">
+      <views:OcrView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:QrCodeViewModel}">
+      <views:QrCodeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+      <views:SettingsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:HistoryViewModel}">
+      <views:HistoryView />
+    </DataTemplate>
+  </Application.DataTemplates>
+  <Application.Styles>
+    <themes:FluentTheme />
+  </Application.Styles>
+</Application>

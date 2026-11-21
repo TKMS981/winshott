@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Winshott.Presentation.ViewModels"
+             x:Class="Winshott.Presentation.Views.OcrView"
+             x:DataType="vm:OcrViewModel">
+  <StackPanel Spacing="14">
+    <TextBlock Text="Text recognition" FontSize="26" FontWeight="SemiBold" />
+    <TextBlock Text="Recognize text from an image or selected screen region." TextWrapping="Wrap" Opacity="0.68" />
+    <Border Padding="16" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+      <StackPanel Spacing="5">
+        <TextBlock Text="Not implemented yet" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Opacity="0.75" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

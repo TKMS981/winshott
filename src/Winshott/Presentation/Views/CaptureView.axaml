@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Winshott.Presentation.ViewModels"
+             x:Class="Winshott.Presentation.Views.CaptureView"
+             x:DataType="vm:CaptureViewModel">
+  <StackPanel Spacing="18">
+    <StackPanel Spacing="5">
+      <TextBlock Text="Capture" FontSize="26" FontWeight="SemiBold" />
+      <TextBlock Text="Choose a capture mode to see its implementation status." Opacity="0.68" />
+    </StackPanel>
+    <UniformGrid Columns="2" Rows="2">
+      <Button Content="⌖   Region" Command="{Binding SelectModeCommand}" CommandParameter="Region" Margin="0,0,10,10" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
+      <Button Content="▣   Full screen" Command="{Binding SelectModeCommand}" CommandParameter="Full screen" Margin="0,0,0,10" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
+      <Button Content="▱   Window" Command="{Binding SelectModeCommand}" CommandParameter="Window" Margin="0,0,10,0" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
+      <Button Content="↕   Scrolling" Command="{Binding SelectModeCommand}" CommandParameter="Scrolling" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
+    </UniformGrid>
+    <Border Padding="16" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+      <StackPanel Spacing="5">
+        <TextBlock Text="Not implemented yet" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Opacity="0.75" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>
