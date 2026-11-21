@@ -11,6 +11,13 @@ public interface IScreenCaptureService
     Task<CapturedImage> CaptureWindowAsync(string windowId, CancellationToken cancellationToken = default);
 }
 
+public interface IScreenCapturePermissionService
+{
+    Task<ScreenCapturePermission> GetPermissionAsync(CancellationToken cancellationToken = default);
+    Task<ScreenCapturePermission> RequestPermissionAsync(CancellationToken cancellationToken = default);
+    Task OpenPermissionSettingsAsync(CancellationToken cancellationToken = default);
+}
+
 public interface IClipboardService
 {
     Task CopyImageAsync(CapturedImage image, CancellationToken cancellationToken = default);

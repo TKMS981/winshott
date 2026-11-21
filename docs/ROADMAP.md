@@ -19,13 +19,14 @@
 
 結果: macOS 27.2.1 arm64でself-contained `.app`からウィンドウ表示を確認。Windows x64 self-contained publishもmacOS上で成功した。`dotnet build`は0警告/0エラー、xUnit 6件成功。Windows上の起動確認と撮影/OCR/QRの各OS実装はPhase 1の対象外で、UI上も未実装と表示。
 
-## Phase 2 — 基本撮影
+## Phase 2 — 基本撮影（部分実装・実機確認待ち）
 
-1. macOSのディスプレイ列挙と全画面撮影、権限案内。
-2. 範囲選択オーバーレイ、選択枠の移動/サイズ変更、Escape/Enter、ピクセル座標変換。
-3. 撮影結果のプレビュー、画像クリップボード、PNG/JPEG保存。
-4. macOSウィンドウ列挙・撮影と複数ディスプレイ/Retina動作を確認。
-5. 各撮影経路で失敗理由・キャンセル・メモリ上限を扱う。
+1. [x] macOS ScreenCaptureKitのディスプレイ列挙、全ディスプレイ情報、単一ディスプレイ全画面撮影、権限案内UI。
+2. [~] 静止フレーム上のドラッグ範囲選択、Escape/Enter、論理/物理座標変換。全画面オーバーレイ、枠移動/リサイズ、複数ディスプレイ横断は残作業。
+3. [x] 撮影結果プレビュー、macOS画像クリップボード書込み、Avaloniaローカル保存picker、PNG/JPEG保存と共通Skia crop。
+4. [ ] macOSウィンドウ撮影、複数ディスプレイ横断選択、Retina実画面撮影の実機確認。
+5. [~] ScreenCaptureKitの例外表示とキャンセルtoken。大画像のメモリ上限、失敗時の実機検証は残作業。
+6. [ ] 新しいself-contained `.app`の起動、Screen Recording許可状態、画面キャプチャの実画面確認。LaunchServicesはテストbundleを`kLSNoExecutableErr`として拒否した。
 
 ## Phase 3 — スクロール撮影
 

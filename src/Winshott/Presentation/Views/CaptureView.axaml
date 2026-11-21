@@ -1,24 +1,59 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Winshott.Presentation.ViewModels"
+             xmlns:domain="using:Winshott.Domain.Models"
              x:Class="Winshott.Presentation.Views.CaptureView"
-             x:DataType="vm:CaptureViewModel">
+             x:DataType="vm:CaptureViewModel"
+             Loaded="OnLoaded">
+  <ScrollViewer>
   <StackPanel Spacing="18">
     <StackPanel Spacing="5">
       <TextBlock Text="Capture" FontSize="26" FontWeight="SemiBold" />
-      <TextBlock Text="Choose a capture mode to see its implementation status." Opacity="0.68" />
+      <TextBlock Text="Capture a display, then review and save the image locally." Opacity="0.68" />
+    </StackPanel>
+    <Border Padding="14" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+      <StackPanel Spacing="9">
+        <TextBlock Text="macOS Screen Recording" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding PermissionMessage}" TextWrapping="Wrap" Opacity="0.75" />
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Content="Request permission" Command="{Binding RequestPermissionCommand}" Padding="12,7" CornerRadius="8" />
+          <Button Content="Open System Settings" Command="{Binding OpenPermissionSettingsCommand}" Padding="12,7" CornerRadius="8" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+    <StackPanel Orientation="Horizontal" Spacing="10">
+      <TextBlock Text="Display" VerticalAlignment="Center" />
+      <ComboBox ItemsSource="{Binding Displays}" SelectedItem="{Binding SelectedDisplay}" MinWidth="220">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="domain:DisplayInfo">
+            <TextBlock Text="{Binding Name}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <Button Content="Capture display" Command="{Binding CaptureFullScreenCommand}" IsEnabled="{Binding IsPermissionGranted}" Padding="14,8" CornerRadius="9" />
     </StackPanel>
     <UniformGrid Columns="2" Rows="2">
-      <Button Content="⌖   Region" Command="{Binding SelectModeCommand}" CommandParameter="Region" Margin="0,0,10,10" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
-      <Button Content="▣   Full screen" Command="{Binding SelectModeCommand}" CommandParameter="Full screen" Margin="0,0,0,10" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
-      <Button Content="▱   Window" Command="{Binding SelectModeCommand}" CommandParameter="Window" Margin="0,0,10,0" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
-      <Button Content="↕   Scrolling" Command="{Binding SelectModeCommand}" CommandParameter="Scrolling" Padding="18" CornerRadius="12" HorizontalContentAlignment="Left" />
+      <Button Content="⌖   Select region" Click="OnSelectRegion" IsEnabled="{Binding IsPermissionGranted}" Margin="0,0,10,10" Padding="15" CornerRadius="10" HorizontalContentAlignment="Left" />
+      <Button Content="▣   Full display" Command="{Binding CaptureFullScreenCommand}" IsEnabled="{Binding IsPermissionGranted}" Margin="0,0,0,10" Padding="15" CornerRadius="10" HorizontalContentAlignment="Left" />
+      <Button Content="▱   Window (coming soon)" IsEnabled="False" Margin="0,0,10,0" Padding="15" CornerRadius="10" HorizontalContentAlignment="Left" />
+      <Button Content="↕   Scrolling (coming soon)" IsEnabled="False" Padding="15" CornerRadius="10" HorizontalContentAlignment="Left" />
     </UniformGrid>
     <Border Padding="16" CornerRadius="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
-      <StackPanel Spacing="5">
-        <TextBlock Text="Not implemented yet" FontWeight="SemiBold" />
-        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Opacity="0.75" />
+      <StackPanel Spacing="9">
+        <Grid ColumnDefinitions="*,Auto,Auto">
+          <StackPanel Spacing="4">
+            <TextBlock Text="Capture result" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding CapturedDimensions}" Opacity="0.7" />
+          </StackPanel>
+          <Button Grid.Column="1" Content="Copy" Command="{Binding CopyImageCommand}" Margin="0,0,8,0" Padding="12,7" CornerRadius="8" />
+          <Button Grid.Column="2" Content="Save PNG / JPEG" Click="OnSaveImage" Padding="12,7" CornerRadius="8" />
+        </Grid>
+        <Border MaxHeight="360" CornerRadius="8" ClipToBounds="True">
+          <Image Source="{Binding Preview}" Stretch="Uniform" />
+        </Border>
+        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Opacity="0.8" />
       </StackPanel>
     </Border>
   </StackPanel>
+  </ScrollViewer>
 </UserControl>

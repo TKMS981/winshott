@@ -10,6 +10,7 @@ public static class PlatformServiceCollectionExtensions
     {
         services.AddSingleton<UnimplementedPlatformServices>();
         services.AddSingleton<IScreenCaptureService>(provider => provider.GetRequiredService<UnimplementedPlatformServices>());
+        services.AddSingleton<IScreenCapturePermissionService>(provider => provider.GetRequiredService<UnimplementedPlatformServices>());
         services.AddSingleton<IClipboardService>(provider => provider.GetRequiredService<UnimplementedPlatformServices>());
         services.AddSingleton<IOcrService>(provider => provider.GetRequiredService<UnimplementedPlatformServices>());
         services.AddSingleton<IQrCodeService>(provider => provider.GetRequiredService<UnimplementedPlatformServices>());
@@ -21,7 +22,7 @@ public static class PlatformServiceCollectionExtensions
 }
 
 /// <summary>Explicit unavailable services for the foundation build; no operation reports false success.</summary>
-public sealed class UnimplementedPlatformServices : IScreenCaptureService, IClipboardService, IOcrService, IQrCodeService, IImageProcessingService, IFileService, IHotkeyService
+public sealed class UnimplementedPlatformServices : IScreenCaptureService, IScreenCapturePermissionService, IClipboardService, IOcrService, IQrCodeService, IImageProcessingService, IFileService, IHotkeyService
 {
     private static PlatformNotSupportedException Missing(string feature) => new($"{feature} is not implemented in this foundation build.");
 
@@ -30,6 +31,9 @@ public sealed class UnimplementedPlatformServices : IScreenCaptureService, IClip
     public Task<CapturedImage> CaptureFullScreenAsync(string? displayId = null, CancellationToken cancellationToken = default) => throw Missing("Full-screen capture");
     public Task<CapturedImage> CaptureRegionAsync(PixelRect region, CancellationToken cancellationToken = default) => throw Missing("Region capture");
     public Task<CapturedImage> CaptureWindowAsync(string windowId, CancellationToken cancellationToken = default) => throw Missing("Window capture");
+    public Task<ScreenCapturePermission> GetPermissionAsync(CancellationToken cancellationToken = default) => throw Missing("Screen Recording permission");
+    public Task<ScreenCapturePermission> RequestPermissionAsync(CancellationToken cancellationToken = default) => throw Missing("Screen Recording permission");
+    public Task OpenPermissionSettingsAsync(CancellationToken cancellationToken = default) => throw Missing("Screen Recording settings");
     public Task CopyImageAsync(CapturedImage image, CancellationToken cancellationToken = default) => throw Missing("Image clipboard");
     public Task CopyTextAsync(string text, CancellationToken cancellationToken = default) => throw Missing("Text clipboard");
     public Task<CapturedImage?> GetImageAsync(CancellationToken cancellationToken = default) => throw Missing("Image clipboard");

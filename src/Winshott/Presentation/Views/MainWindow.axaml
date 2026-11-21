@@ -30,8 +30,8 @@
       <Button Content="◷   History" Command="{Binding NavigateHistoryCommand}" HorizontalContentAlignment="Left" Padding="14,11" CornerRadius="10" />
       <Border Margin="8,18,8,0" Padding="12" CornerRadius="10" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
         <StackPanel Spacing="6">
-          <TextBlock Text="Foundation build" FontWeight="SemiBold" />
-          <TextBlock Text="Capture and recognition services are not connected yet." TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+          <TextBlock Text="Phase 2 preview" FontWeight="SemiBold" />
+          <TextBlock Text="macOS display capture is being validated. OCR, QR, and window capture are not implemented." TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
         </StackPanel>
       </Border>
     </StackPanel>

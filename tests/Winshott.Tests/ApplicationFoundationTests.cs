@@ -13,12 +13,25 @@ public sealed class ApplicationFoundationTests
     public void MainWindowViewModelStartsOnCapturePage()
     {
         var services = new ServiceCollection();
+        var unavailable = new UnimplementedPlatformServices();
+        services.AddSingleton<IScreenCaptureService>(unavailable);
+        services.AddSingleton<IScreenCapturePermissionService>(unavailable);
+        services.AddSingleton<IClipboardService>(unavailable);
+        services.AddSingleton<IFileService>(unavailable);
+        services.AddSingleton<ISettingsService>(new TestSettingsService());
+        services.AddLogging();
         services.AddTransient<CaptureViewModel>();
         using var provider = services.BuildServiceProvider();
 
         var viewModel = new MainWindowViewModel(provider, NullLogger<MainWindowViewModel>.Instance);
 
         Assert.IsType<CaptureViewModel>(viewModel.CurrentPage);
+    }
+
+    private sealed class TestSettingsService : ISettingsService
+    {
+        public Task<Winshott.Domain.Models.AppSettings> LoadAsync(CancellationToken cancellationToken = default) => Task.FromResult(new Winshott.Domain.Models.AppSettings());
+        public Task SaveAsync(Winshott.Domain.Models.AppSettings settings, CancellationToken cancellationToken = default) => Task.CompletedTask;
     }
 
     [Fact]
@@ -30,6 +43,7 @@ public sealed class ApplicationFoundationTests
 
         Assert.IsAssignableFrom<ISettingsService>(provider.GetRequiredService<ISettingsService>());
         Assert.IsAssignableFrom<IScreenCaptureService>(provider.GetRequiredService<IScreenCaptureService>());
+        Assert.IsAssignableFrom<IScreenCapturePermissionService>(provider.GetRequiredService<IScreenCapturePermissionService>());
         Assert.IsAssignableFrom<IClipboardService>(provider.GetRequiredService<IClipboardService>());
         Assert.IsAssignableFrom<IOcrService>(provider.GetRequiredService<IOcrService>());
         Assert.IsAssignableFrom<IQrCodeService>(provider.GetRequiredService<IQrCodeService>());

@@ -46,8 +46,8 @@ docs/
 |---|---|---|
 | .NET | .NET 10 LTS / SDK 10.0.404 | macOS arm64でAvaloniaとテストプロジェクトのビルドを確認。 |
 | UI | Avalonia 12.1.6 + CommunityToolkit.Mvvm 8.4.2 | Avalonia package supports net10.0; CommunityToolkit.Mvvm provides ObservableObject/RelayCommand source generators and is MIT licensed. macOS 27.2.1 is beyond the currently documented OS list; app bundle launch was tested successfully on this host. |
-| 画像 | SkiaSharp 4.157.0（安定版） | NuGetに.NET 6+資産、Windows/macOSを含む対応とMITライセンスを確認。ネイティブassetsの配布をRIDごとに検証する。 |
-| macOS撮影 | ScreenCaptureKitをC ABIの小さなObjective-C/Objective-C++ブリッジから呼ぶ | Appleの推奨API。画面収録のユーザー許可が必要。AvaloniaはmacOS API全体の.NETバインディングを提供しないため、ブリッジのコード量を限定する。 |
+| 画像 | SkiaSharp 3.119.4 + macOS/Win32 NativeAssets | MIT。既存のオフラインNuGetキャッシュ内にある同一バージョンを固定し、macOS/Windows両方のRID向けネイティブ資産を含める。別バージョンへ上げる場合は両OSで再restore/buildする。 |
+| macOS撮影 | ScreenCaptureKitを小さなSwift C ABI共有ライブラリから呼ぶ | Appleの推奨API。Swiftは非同期ディスプレイ列挙/PNGキャプチャ、Screen Recording権限、設定画面、NSPasteboard画像書込みだけを担当し、画像処理とUIはC#側に残す。 |
 | Windows撮影 | Windows.Graphics.CaptureをWindows専用プロジェクトから呼ぶ | ディスプレイとウィンドウのフレーム取得に対応。ユーザー選択UIとシステムのキャプチャ表示枠などOS仕様に従う。既存アプリ全体の無表示キャプチャが可能かは対象OSで検証する。 |
 | macOS OCR | Vision `VNRecognizeTextRequest` をネイティブブリッジで利用 | テキスト領域と認識文字列を返す。日本語/英語の利用可能言語はOS実機上で取得し、テストする。 |
 | Windows OCR | `Windows.Media.Ocr` を候補にする | MicrosoftのAPI文書ではデスクトップ利用にMSIXのパッケージIDが必要。スタンドアロン実行形式との要件衝突があるため、MSIXを標準配布とし、自己完結型EXEでOCRを提供する方法はPhase 0の未解決事項として実機試作で決定する。 |
@@ -57,15 +57,19 @@ docs/
 
 NuGetのバージョンはプロジェクト生成時に再確認し、中央パッケージ管理で固定する。依存パッケージとネイティブ同梱物のライセンス一覧をリリース前に作成する。
 
-## Phase 1実装状態
+## Phase 1/2実装状態
 
 - 単一のAvalonia desktop projectに Domain/Application/Infrastructure/Presentation の責務別フォルダーを配置し、test projectを分離した。初期段階では参照方向を単純に保つため、フォルダー境界とDIを先に設け、project分割はネイティブ実装導入時に行う。
 - MainWindow、Capture/OCR/QR/History/Settings画面、ViewModelを実装。アクション未実装箇所はUIに明示した。
 - JSON設定はOS別のApplication Support/AppDataに保存。読み込み不良時はログを残して既定値に復帰し、壊れたファイルは自動上書きしない。
 - Microsoft.Extensions.Loggingのconsole + ローカルファイルproviderを登録。画像・OCR・クリップボード内容はログに含めない。
-- 7個のPlatform interfaceをDI登録。現段階のproviderは未実装操作ごとに`PlatformNotSupportedException`を返す。
-- macOS 27.2.1 arm64でRelease self-contained publishとFinder起動可能な`.app`を作成して、実際にメインウィンドウを表示確認した。非対話シェルからraw apphostを実行するとAvalonia Nativeのdisplay render timerが`-6661`で失敗したが、`.app`バンドル経由の起動は成功した。
-- 同じ共通UIプロジェクトをmacOS上からWindows x64 self-contained publishできることを確認した。Windows上での起動・画面描画・ネイティブ撮影の動作確認は未実施。
+- 7個のPhase 1 Platform interfaceに加え、画面収録権限の状態/要求/設定画面誘導interfaceをDI登録。
+- macOSではScreenCaptureKitでディスプレイID、名前、論理領域、物理解像度、scale、主画面を列挙し、選択したディスプレイを非同期PNG撮影する。SwiftブリッジをmacOS build/publish時に生成する。
+- 画像モデルは物理ピクセルを保持する。論理→物理変換、境界クランプ、SkiaSharp crop、PNG/JPEG保存/読み込みと名前生成を共通C#側で実装。Avalonia storage pickerから保存先を選ぶ。
+- 範囲選択はディスプレイの静止フレームをウィンドウ内に表示し、ドラッグ選択、Enter確定、Escape取消を行ってから選択範囲を撮り直す。実画面上の全ディスプレイを覆うオーバーレイ、選択枠の移動/リサイズ、ディスプレイをまたぐ一回の選択は未実装。
+- macOS 27.2.1 arm64でSwift bridge compile、.NET 10.0.404 Release `osx-arm64` self-contained publish、Windows x64 self-contained publish、C# build (0 warning/error)、`dotnet test` (11件成功) を確認。通常sandboxではAvaloniaのtelemetry log書込みとMTP named pipe bindが拒否されるため、制限を外したビルド/テスト確認を一度実行した。
+- 新しく作成した`.app`をLaunchServicesとCodex CUAから起動しようとしたが、前者は`kLSNoExecutableErr`、後者は期限切れcontinuationで失敗し、新ビルドのウィンドウ表示とScreenCaptureKit実撮影は未確認。Phase 1から開いていた旧プロセスのウィンドウが存在するため、新ビルド起動の証拠にはしない。
+- Windows向けネイティブ撮影/クリップボードは未実装。共通C# + SkiaSharpのx64自己完結publishは確認済みだが、Windows実機での起動/描画は未確認。
 
 ## OS固有の技術課題
 
