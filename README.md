@@ -51,6 +51,14 @@ Settings are JSON in the OS application support directory (`~/Library/Applicatio
 
 `IScreenCaptureService`, `IScreenCapturePermissionService`, `IClipboardService`, `IOcrService`, `IQrCodeService`, `IImageProcessingService`, `IFileService`, and `IHotkeyService` are registered through DI. On macOS, ScreenCaptureKit enumerates displays and captures a display asynchronously; NSPasteboard writes PNG images. SkiaSharp crops and encodes PNG/JPEG, and Avalonia's storage picker chooses the local save path. Window/scroll capture, clipboard reads/text, OCR, QR, global hotkeys, and Windows-specific capture are still explicit unsupported operations; they never report placeholder success.
 
+## Platform branches
+
+- `main` is the shared cross-platform base.
+- `macos-native` carries the ScreenCaptureKit Swift bridge and macOS capture integration.
+- `windows-native` is the starting point for Windows-native work. Windows.Graphics.Capture and Windows clipboard integration are not implemented yet; the current Windows x64 publish verifies packaging only.
+
+Both platform branches currently start from the same shared source revision. Keep OS-specific native services isolated behind the application interfaces as each branch is developed.
+
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
